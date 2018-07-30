@@ -1,6 +1,7 @@
 import * as DCL from 'metaverse-api'
 
-export default class SampleScene extends DCL.ScriptableScene {
+export default class SampleScene extends DCL.ScriptableScene 
+{
   songs: {src: string, name: string}[] = 
   [
     {src: "sounds/Concerto a' 4 Violini No 2 - Telemann.mp3", name: "Telemann"},
@@ -9,12 +10,12 @@ export default class SampleScene extends DCL.ScriptableScene {
     {src: "sounds/Scherzo No1_ Chopin.mp3", name: "Chopin"},
   ];
 
-  state: {buttonState: boolean[], lastSelectedState: number} = {
+  state: {buttonState: boolean[], lastSelectedState: number} = { 
     buttonState: Array(this.songs.length).fill(false),
     lastSelectedState: 0,
   };
-  
-  async sceneDidMount() 
+
+  sceneDidMount() 
   {
     for(let i = 0; i < this.songs.length; i++)
     {
@@ -31,42 +32,42 @@ export default class SampleScene extends DCL.ScriptableScene {
     }
   }
 
-  renderButtons() {
+  renderButtons() 
+  {
     return this.songs.map((song, index) =>
     {
       let x = index % 2 == 0 ? -.4 : .1;
       let y = Math.floor(index / 2) == 0 ? 1.9 : 1.77;
-      let z = 0;
-      if(this.state.buttonState[index])
+      let buttonZ = 0;
+      if(this.state.buttonState[index]) 
       {
-        z = .1;
+        buttonZ = .1;
       }
       return (
         <entity
             position={{x, y, z: -.7}}
-        >
+            sound={{ 
+              src:song.src, 
+              playing:this.state.buttonState[index]}}>
           <cylinder
-            position={{x: 0, y: 0, z}}
-            transition={{position: {duration: 100}}}
             id={"song" + index}
+            position={{x: 0, y: 0, z: buttonZ}} 
+            transition={{position: {duration: 100}}} 
             rotation={{x: 90, y: 0, z: 0}}
             scale={{x: .05, y: .2, z: .05}}
-            color="#990000"
-            sound={{
-              src:song.src, 
-              playing:this.state.buttonState[index]}} />
-          <text 
-            hAlign="left"
-            value={this.songs[index].name} 
-            position={{x: .26, y: 0, z: -.1}}
-            scale={.4}/>
+            color="#990000" />
+            <text 
+              hAlign="left"
+              value={this.songs[index].name} 
+              position={{x: .26, y: 0, z: -.1}}
+              scale={.4}/>
         </entity>
       )
-    }
-    );
+    });
   }
 
-  async render() {
+  async render() 
+  {
     return (
       <scene>
         <gltf-model
