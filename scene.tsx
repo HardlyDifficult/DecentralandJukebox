@@ -10,9 +10,9 @@ export default class SampleScene extends DCL.ScriptableScene
     {src: "sounds/Scherzo No1_ Chopin.mp3", name: "Chopin"},
   ];
 
-  state: {buttonState: boolean[], lastSelectedState: number} = { 
+  state: {buttonState: boolean[], lastSelectedButton: number} = { 
     buttonState: Array(this.songs.length).fill(false),
-    lastSelectedState: 0,
+    lastSelectedButton: 0,
   };
 
   sceneDidMount() 
@@ -21,13 +21,16 @@ export default class SampleScene extends DCL.ScriptableScene
     {
       this.eventSubscriber.on(`song${i}_click`, () => 
       {
-        if(i != this.state.lastSelectedState)
+        let newButtonState = this.state.buttonState.slice();
+        if(i != this.state.lastSelectedButton)
         {
-          this.state.buttonState[this.state.lastSelectedState] = false;
+          newButtonState[this.state.lastSelectedButton] = false;
         }
-        this.state.buttonState[i] = !this.state.buttonState[i];
-        this.state.lastSelectedState = i;
-        this.forceUpdate();
+        newButtonState[i] = !this.state.buttonState[i];
+        this.setState({
+          buttonState: newButtonState,
+          lastSelectedButton: i
+        });
       });
     }
   }
